@@ -8,6 +8,8 @@
 #include <sys/wait.h>
 #include "commands.h"
 #include "built_in.h"
+#include <signal.h>
+#include "signal_handlers.h"
 
 static struct built_in_command built_in_commands[] = {
   { "cd", do_cd, validate_cd_argv },
