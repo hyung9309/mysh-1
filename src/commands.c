@@ -2,7 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/wait.h>
 #include "commands.h"
 #include "built_in.h"
 
@@ -45,7 +48,96 @@ int evaluate_command(int n_commands, struct single_command (*commands)[512])
         fprintf(stderr, "%s: Invalid arguments\n", com->argv[0]);
         return -1;
       }
-    } else if (strcmp(com->argv[0], "") == 0) {
+    }
+
+
+/*
+struct stat buf;
+stat(com->argv[0], &buf);
+else if(S_ISREG(buf.st_mode))
+{
+
+	stat(com->argv[1], &buf);
+	if(S_ISDIR(buf.st_mode))
+	{
+		pid_t y = fork();
+		int status;
+
+		if(y == 0)
+			execv(com->argv[0], com->argv);
+		else
+			wait(&status);
+		return 0;
+	}
+	else
+	{
+		fprintf(stderr, "%s: Wrong path\n", com->argv[1]);
+		return -1;
+	}
+}
+*/
+
+else if(strcmp(com->argv[0], "/bin/ls") == 0)
+{
+	pid_t pid = fork();
+	int status;
+	if(pid == 0)
+		execv("/bin/ls", com->argv);
+	else
+		wait(&status);
+	return 0;
+}
+else if(strcmp(com->argv[0], "/bin/cat") == 0)
+{
+	pid_t pid = fork();
+	int status;
+	if(pid == 0)
+		execv("/bin/cat", com->argv);
+	else
+		wait(&status);
+	return 0;
+}
+else if(strcmp(com->argv[0], "/usr/bin/vim") == 0)
+{
+	pid_t pid = fork();
+	int status;
+	if(pid == 0)
+		execv("/usr/bin/vim", com->argv);
+	else
+		wait(&status);
+	return 0;
+}
+else if(strcmp(com->argv[0], "ls") == 0)
+{
+	pid_t pid = fork();
+	int status;
+	if(pid == 0)
+		execv("/bin/ls", com->argv);
+	else
+		wait(&status);
+	return 0;
+}
+else if(strcmp(com->argv[0], "cat") == 0)
+{
+	pid_t pid = fork();
+	int status;
+	if(pid == 0)
+		execv("/bin/cat", com->argv);
+	else
+		wait(&status);
+	return 0;
+}
+else if(strcmp(com->argv[0], "vim") == 0)
+{
+	pid_t pid = fork();
+	int status;
+	if(pid == 0)
+		execv("/usr/bin/vim", com->argv);
+	else
+		wait(&status);
+	return 0;
+}
+ else if (strcmp(com->argv[0], "") == 0) {
       return 0;
     } else if (strcmp(com->argv[0], "exit") == 0) {
       return 1;
